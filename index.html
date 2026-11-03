@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pipedrive Class of 2026</title>
+<meta name="description" content="Alumni reunion party for everyone who has graduated from Pipedrive. Sign up and share your photos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Tanker (Indian Type Foundry) for the main title */
+@font-face {
+  font-family: "Tanker";
+  src: url("fonts/Tanker-Regular.woff2") format("woff2"),
+       url("fonts/Tanker-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+/* Layout: one centered column. Pipedrive-green banner, then the ceremony details, the sign-up card and the yearbook card. */
+:root {
+  --ink: #014722;           /* dark green: text */
+  --paper: #FFFFFF;
+  --muted: #017737;         /* Pipedrive green: labels, secondary text */
+  --line: #CFD0F9;          /* light purple: rules */
+  --danger: #b4321f;
+
+  --banner: #017737;        /* Pipedrive green */
+  --banner-accent: #D7F9D3; /* light green: "2026" */
+  --banner-detail: #CFD0F9; /* light purple: eyebrow, scroll cue */
+
+  --card: #D7F9D3;          /* light green sign-up card */
+  --card-ring: #017737;
+  --input-bg: #FFFFFF;
+  --input-border: #017737;           /* active field */
+  --input-border-rest: #9FD2AE;      /* idle field: lighter Pipedrive green */
+
+  --accent: #6861F2;        /* purple button */
+  --on-accent: #FFFFFF;
+  --accent-shadow: #3B3A97; /* dark purple: button hover */
+
+  --yearbook: #CFD0F9;      /* light purple card */
+  --on-yearbook: #3B3A97;
+  --focus: #6861F2;
+
+  --title: "Tanker", "Impact", "Arial Narrow", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #FFFFFF; --paper: #014722; --muted: #D7F9D3; --line: #017737; --danger: #f08a78;
+    --banner: #017737; --banner-accent: #D7F9D3; --banner-detail: #CFD0F9;
+    --card: #013d1d; --card-ring: #CFD0F9; --input-bg: #014722; --input-border: #017737; --input-border-rest: #015a2d;
+    --accent: #6861F2; --on-accent: #FFFFFF; --accent-shadow: #3B3A97;
+    --yearbook: #3B3A97; --on-yearbook: #FFFFFF; --focus: #CFD0F9;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+    --ink: #FFFFFF; --paper: #014722; --muted: #D7F9D3; --line: #017737; --danger: #f08a78;
+    --banner: #017737; --banner-accent: #D7F9D3; --banner-detail: #CFD0F9;
+    --card: #013d1d; --card-ring: #CFD0F9; --input-bg: #014722; --input-border: #017737; --input-border-rest: #015a2d;
+    --accent: #6861F2; --on-accent: #FFFFFF; --accent-shadow: #3B3A97;
+    --yearbook: #3B3A97; --on-yearbook: #FFFFFF; --focus: #CFD0F9;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+/* Everything that isn't a title uses Inter, form controls and buttons included */
+button, input, select, textarea, option { font-family: var(--body); }
+html { scroll-behavior: smooth; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1rem/1.6 var(--body);
+}
+.wrap {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- Banner ---------- */
+/* Full-screen header stays put while the content slides up over it (parallax) */
+.banner {
+  background: var(--banner);
+  color: #FFFFFF;
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  justify-items: center;
+  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
+}
+.banner .wrap {
+  width: 100%;
+  padding-block: 3rem;
+  display: grid; gap: 1.5rem; justify-items: center; text-align: center;
+  will-change: transform, opacity;
+}
+.banner.tall { position: relative; }
+main, footer { position: relative; z-index: 1; background: var(--paper); }
+main {
+  border-radius: 32px 32px 0 0;
+  margin-top: -32px;
+  box-shadow: 0 -12px 40px rgba(1, 71, 34, 0.25);
+}
+
+/* Header entrance: title first, then the subtext, then the scroll cue */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.banner .eyebrow, .banner h1 { animation: rise 1s ease-out 0.2s backwards; }
+.banner .lede { animation: rise 1s ease-out 1.1s backwards; }
+.banner .facts { animation: rise 1s ease-out 1.9s backwards; }
+.scroll-cue {
+  display: grid; justify-items: center; gap: 0.35rem;
+  color: var(--banner-detail);
+  font: 500 0.75rem/1 var(--body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  animation: rise 1s ease-out 2.7s backwards;
+}
+.scroll-cue .arrow { font-size: 1.2rem; animation: bob 2s ease-in-out 3s infinite; }
+@keyframes bob { 50% { transform: translateY(6px); } }
+.eyebrow {
+  font: 500 0.78rem/1 var(--body);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--banner-detail);
+  margin: 0;
+}
+h1 {
+  font-family: var(--title);
+  font-weight: 400;
+  font-size: clamp(3.2rem, 11vw, 7.5rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+h1 .year {
+  display: block;
+  color: var(--banner-accent);
+  font-size: 1.35em;
+}
+.lede {
+  max-width: 36rem;
+  font-size: 1.15rem;
+  margin: 0;
+  color: #FFFFFF;
+}
+
+/* ---------- Main grid ---------- */
+main .wrap {
+  padding-block: 3rem 4rem;
+  display: grid;
+  grid-template-columns: minmax(0, 44rem);
+  justify-content: center;
+  text-align: center;
+  gap: 3rem;
+}
+
+h2 {
+  font-family: var(--title);
+  font-weight: 400;
+  font-size: 2.2rem;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* RSVP card: the diploma */
+.diploma {
+  background: var(--card);
+  border: 1px solid var(--line);
+  outline: 2px solid var(--card-ring);
+  outline-offset: -8px;
+  border-radius: 28px;
+  padding: 2.25rem clamp(1.25rem, 4vw, 2.5rem);
+  display: grid;
+  gap: 1.5rem;
+}
+.diploma header { display: grid; gap: 0.4rem; }
+.diploma header p { margin: 0; color: var(--muted); }
+
+form { display: grid; gap: 1.6rem; }
+.field { display: grid; gap: 0.35rem; text-align: left; }
+.field label, .field .hint, .field .field-error { padding-left: 0.25rem; }
+label {
+  font: 500 0.75rem/1 var(--body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+input, select {
+  font: inherit;
+  color: var(--ink);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border-rest);
+  border-width: 1.5px;
+  border-radius: 14px;
+  padding: 0.8rem 1.1rem;
+  width: 100%;
+}
+/* Custom dropdown arrow, inset from the right edge like the text is from the left */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 3rem;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 1.55rem) 55%, calc(100% - 1.15rem) 55%;
+  background-size: 0.4rem 0.4rem;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+/* Active fields just get the stronger border, no focus ring */
+input:focus, select:focus { outline: none; border-color: var(--input-border); }
+button:focus-visible, a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.hint { font-size: 0.85rem; color: var(--muted); margin: 0; }
+
+button[type="submit"] {
+  min-width: 12rem;
+  font: 600 1rem/1 var(--body);
+  color: var(--on-accent);
+  background: var(--accent);
+  border: 0;
+  border-radius: 999px;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  justify-self: center;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+button[type="submit"]:hover { background: var(--accent-shadow); }
+button[type="submit"]:active { transform: scale(0.98); }
+button[disabled] { opacity: 0.6; cursor: progress; }
+
+.status { margin: -0.6rem 0 0; font-weight: 500; }
+.status:empty { display: none; }
+.status.error { color: var(--danger); }
+
+/* Success state */
+.done { display: grid; gap: 0.75rem; justify-items: center; text-align: center; }
+.done .cap { font-size: 3rem; line-height: 1; }
+.done p { margin: 0; }
+.field-error { margin: 0; font-size: 0.85rem; font-weight: 500; color: var(--danger); }
+[aria-invalid="true"], [aria-invalid="true"]:focus { border-color: var(--danger); }
+
+/* Party details, shown in the header, one per line */
+.facts {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: grid;
+  gap: 0.6rem;
+  justify-items: center;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: #FFFFFF;
+}
+.fact-when {
+  font-family: var(--title);
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.fact-dress { font-size: 0.9rem; color: var(--banner-accent); }
+.map-link {
+  font-family: var(--body);
+  font-size: 1rem;
+  display: inline-grid; place-items: center;
+  width: 1.75rem; height: 1.75rem;
+  margin-left: 0.35rem;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: var(--banner);
+  font-weight: 700;
+  text-decoration: none;
+  vertical-align: middle;
+  transition: transform 0.15s ease;
+}
+.map-link:hover { transform: translate(1px, -1px); }
+
+.pennant {
+  background: var(--yearbook);
+  color: var(--on-yearbook);
+  border-radius: 28px;
+  padding: 1.75rem 1.5rem;
+  display: grid;
+  gap: 0.85rem;
+}
+.pennant p { margin: 0; }
+.drive-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  justify-self: center;
+  font-weight: 700;
+  color: var(--on-yearbook);
+  text-decoration: none;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  padding: 0.7rem 1.5rem;
+  transition: background 0.15s ease;
+}
+.drive-link:hover { background: var(--paper); color: var(--ink); }
+.drive-link[aria-disabled="true"] { opacity: 0.55; pointer-events: none; border-style: dashed; }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap {
+  padding-block: 1.5rem;
+  font: 400 0.8rem/1.5 var(--body);
+  color: var(--muted);
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; justify-content: center; text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="banner">
+  <div class="wrap">
+    <p class="eyebrow">Alumni reunion · Commencement party</p>
+    <h1>Pipedrive Class of <span class="year">2026</span></h1>
+    <p class="lede">You closed the deal and moved on. Now it's time to celebrate. Every former Pipedriver is invited, whether you graduated last month or back in 2012.</p>
+    <ul class="facts" aria-label="Party details">
+      <li class="fact-when"><span id="fact-date"></span> · <span id="fact-place"></span></li>
+      <li class="fact-dress">Smart casual. Old Pipedrive merch earns bonus points.</li>    </ul>
+  </div>
+  <a class="scroll-cue" href="#content">Sign up <span class="arrow" aria-hidden="true">↓</span></a>
+</header>
+
+<main id="content">
+  <div class="wrap">
+    <section class="diploma" aria-labelledby="rsvp-title">
+      <header id="rsvp-header">
+        <h2 id="rsvp-title">Claim your seat</h2>      </header>
+
+      <form id="rsvp" novalidate>
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required placeholder="Kristjan Tamm" aria-describedby="name-error">
+          <p class="field-error" id="name-error" hidden></p>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="kristjan@example.com" aria-describedby="email-error">
+          <p class="field-error" id="email-error" hidden></p>
+          <p class="hint">Use a personal address. We'll send party details here.</p>
+        </div>
+        <div class="field">
+          <label for="year">Graduation year</label>
+          <select id="year" name="year" required>
+            <option value="" disabled selected>The year you left Pipedrive</option>
+          </select>
+          <p class="field-error" id="year-error" hidden></p>
+        </div>
+        <button type="submit" id="submit">Sign me up</button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="done" id="done" hidden>
+        <div class="cap" aria-hidden="true">🎓</div>
+        <h2 id="done-title">You're on the list</h2>
+        <p id="done-text"></p>
+      </div>
+    </section>
+
+    <section class="pennant" aria-labelledby="photos-title">
+      <h2 id="photos-title">The yearbook</h2>
+      <p>Offsites, hackathons, team dinners, the office dog. Upload your favourite Pipedrive memories to the shared folder so we can show them at the party.</p>
+      <a class="drive-link" id="drive-link" href="#" target="_blank" rel="noopener">Add your photos to Google Drive <span aria-hidden="true">→</span></a>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Pipedrive Class of 2026 · Alumni party</span>
+    <span>Organised by former Pipedrivers</span>
+  </div>
+</footer>
+
+<script>
+/* ===== Edit these values ===== */
+const CONFIG = {
+  // Web app URL from Google Apps Script (see README.md), ends with /exec
+  SHEET_ENDPOINT: "https://script.google.com/macros/s/AKfycbxj9zx9FgUK_btBjijqsqZL34--UsfUWCyxvLPhdVhbyJdYVm2kCmJvrdyDmtbBuN8i/exec",
+  // Shared Google Drive folder for photos
+  DRIVE_LINK: "PASTE_GOOGLE_DRIVE_LINK_HERE",
+  EVENT_DATE: "Friday, November 13th 2026 · 20:00",
+  EVENT_PLACE: "Lift99",
+  EVENT_MAP_LINK: "https://maps.app.goo.gl/nTtdQ5XpSF6bMmHE8",
+  FIRST_YEAR: 2010,
+  LAST_YEAR: 2026,
+};
+/* ============================= */
+
+const $ = (id) => document.getElementById(id);
+
+// Parallax: the header content drifts up slowly and fades while the page scrolls over it
+const banner = document.querySelector(".banner");
+const heroContent = document.querySelector(".banner .wrap");
+// On short screens the header is taller than the window; let it scroll normally so nothing gets covered
+const fitBanner = () => banner.classList.toggle("tall", banner.scrollHeight > window.innerHeight + 1);
+fitBanner();
+window.addEventListener("resize", fitBanner);
+window.addEventListener("load", fitBanner);
+document.fonts?.ready.then(fitBanner);
+const cue = document.querySelector(".scroll-cue");
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  let ticking = false;
+  const onScroll = () => {
+    ticking = false;
+    if (banner.classList.contains("tall")) {
+      heroContent.style.transform = heroContent.style.opacity = cue.style.opacity = "";
+      return;
+    }
+    const y = Math.min(window.scrollY, window.innerHeight);
+    const fade = Math.max(0, 1 - y / (window.innerHeight * 0.7));
+    heroContent.style.transform = `translateY(${y * 0.35}px)`;
+    heroContent.style.opacity = fade;
+    cue.style.opacity = fade;
+    ticking = false;
+  };
+  window.addEventListener("scroll", () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+}
+
+// Graduation years, newest first
+const yearSelect = $("year");
+for (let y = CONFIG.LAST_YEAR; y >= CONFIG.FIRST_YEAR; y--) {
+  const opt = document.createElement("option");
+  opt.value = y;
+  opt.textContent = y === CONFIG.LAST_YEAR ? `${y} (fresh graduate)` : String(y);
+  yearSelect.append(opt);
+}
+
+$("fact-date").textContent = CONFIG.EVENT_DATE;
+$("fact-place").textContent = CONFIG.EVENT_PLACE;
+if (CONFIG.EVENT_MAP_LINK) {
+  const map = document.createElement("a");
+  map.href = CONFIG.EVENT_MAP_LINK;
+  map.target = "_blank";
+  map.rel = "noopener";
+  map.className = "map-link";
+  map.textContent = "↗";
+  map.setAttribute("aria-label", `Open ${CONFIG.EVENT_PLACE} in Google Maps`);
+  map.title = "Open in Google Maps";
+  $("fact-place").append(map);
+}
+
+const driveLink = $("drive-link");
+if (CONFIG.DRIVE_LINK.startsWith("http")) {
+  driveLink.href = CONFIG.DRIVE_LINK;
+} else {
+  driveLink.setAttribute("aria-disabled", "true");
+  driveLink.firstChild.textContent = "Photo folder link coming soon ";
+}
+
+const form = $("rsvp");
+const status = $("status");
+const submit = $("submit");
+
+function setStatus(msg, isError) {
+  status.textContent = msg;
+  status.classList.toggle("error", !!isError);
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = $("name").value.trim();
+  const email = $("email").value.trim();
+  const year = yearSelect.value;
+
+  const errors = {
+    name: name ? "" : "Please enter your name.",
+    email: !email ? "Please enter your email."
+      : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "" : "Please enter a valid email, like name@example.com.",
+    year: year ? "" : "Please pick the year you left Pipedrive.",
+  };
+  for (const [field, msg] of Object.entries(errors)) {
+    const el = $(`${field}-error`);
+    el.textContent = msg;
+    el.hidden = !msg;
+    $(field).setAttribute("aria-invalid", msg ? "true" : "false");
+  }
+  const firstInvalid = Object.keys(errors).find((f) => errors[f]);
+  if (firstInvalid) {
+    setStatus("");
+    $(firstInvalid).focus();
+    return;
+  }
+
+  submit.disabled = true;
+  setStatus("Adding you to the class list…");
+
+  try {
+    if (CONFIG.SHEET_ENDPOINT.startsWith("https://")) {
+      // Apps Script doesn't send CORS headers, so the request is fire-and-forget (no-cors).
+      await fetch(CONFIG.SHEET_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        body: new URLSearchParams({ name, email, year, submittedAt: new Date().toISOString() }),
+      });
+    } else {
+      console.warn("SHEET_ENDPOINT is not set, so this sign-up was not saved.");
+    }
+    $("done-text").textContent = `Welcome back, ${name.split(" ")[0]}. Class of ${year}, we'll email party details to ${email}.`;
+    form.hidden = true;
+    $("rsvp-header").hidden = true;
+    $("done").hidden = false;
+    setStatus("");
+  } catch (err) {
+    setStatus("We couldn't reach the sign-up sheet. Check your connection and try again.", true);
+  } finally {
+    submit.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
