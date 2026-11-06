@@ -32,6 +32,7 @@
   --card: #D7F9D3;          /* light green sign-up card */
   --card-ring: #017737;
   --input-bg: #FFFFFF;
+  --placeholder: #757575;           /* browser default grey */
   --input-border: #017737;           /* active field */
   --input-border-rest: #9FD2AE;      /* idle field: lighter Pipedrive green */
 
@@ -50,7 +51,7 @@
   :root:not([data-theme="light"]) {
     --ink: #FFFFFF; --paper: #014722; --muted: #D7F9D3; --line: #017737; --danger: #f08a78;
     --banner: #017737; --banner-accent: #D7F9D3; --banner-detail: #CFD0F9;
-    --card: #013d1d; --card-ring: #CFD0F9; --input-bg: #014722; --input-border: #017737; --input-border-rest: #015a2d;
+    --card: #013d1d; --card-ring: #CFD0F9; --input-bg: #014722; --input-border: #017737; --input-border-rest: #015a2d; --placeholder: rgba(255, 255, 255, 0.5);
     --accent: #6861F2; --on-accent: #FFFFFF; --accent-shadow: #3B3A97;
     --yearbook: #3B3A97; --on-yearbook: #FFFFFF; --focus: #CFD0F9;
     color-scheme: dark;
@@ -59,7 +60,7 @@
 :root[data-theme="dark"] {
     --ink: #FFFFFF; --paper: #014722; --muted: #D7F9D3; --line: #017737; --danger: #f08a78;
     --banner: #017737; --banner-accent: #D7F9D3; --banner-detail: #CFD0F9;
-    --card: #013d1d; --card-ring: #CFD0F9; --input-bg: #014722; --input-border: #017737; --input-border-rest: #015a2d;
+    --card: #013d1d; --card-ring: #CFD0F9; --input-bg: #014722; --input-border: #017737; --input-border-rest: #015a2d; --placeholder: rgba(255, 255, 255, 0.5);
     --accent: #6861F2; --on-accent: #FFFFFF; --accent-shadow: #3B3A97;
     --yearbook: #3B3A97; --on-yearbook: #FFFFFF; --focus: #CFD0F9;
   color-scheme: dark;
@@ -214,6 +215,7 @@ input, select {
   padding: 0.8rem 1.1rem;
   width: 100%;
 }
+input::placeholder { color: var(--placeholder); opacity: 1; }
 /* Custom dropdown arrow, inset from the right edge like the text is from the left */
 select {
   appearance: none;
@@ -357,12 +359,12 @@ footer .wrap {
       <form id="rsvp" novalidate>
         <div class="field">
           <label for="name">Full name</label>
-          <input id="name" name="name" type="text" autocomplete="name" required placeholder="Kristjan Tamm" aria-describedby="name-error">
+          <input id="name" name="name" type="text" autocomplete="name" required placeholder="Name Surname" aria-describedby="name-error">
           <p class="field-error" id="name-error" hidden></p>
         </div>
         <div class="field">
           <label for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" required placeholder="kristjan@example.com" aria-describedby="email-error">
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="namesurname@example.com" aria-describedby="email-error">
           <p class="field-error" id="email-error" hidden></p>
           <p class="hint">Use a personal address. We'll send party details here.</p>
         </div>
@@ -406,7 +408,7 @@ const CONFIG = {
   SHEET_ENDPOINT: "https://script.google.com/macros/s/AKfycbxj9zx9FgUK_btBjijqsqZL34--UsfUWCyxvLPhdVhbyJdYVm2kCmJvrdyDmtbBuN8i/exec",
   // Shared Google Photos album for memories
   DRIVE_LINK: "https://photos.app.goo.gl/VjLm4C2atWZTGt9f7",
-  EVENT_DATE: "Friday, November 13th 2026 · 20:00",
+  EVENT_DATE: "Friday, November 13th 2026 · 18:00–23:00",
   EVENT_PLACE: "Lift99",
   EVENT_MAP_LINK: "https://maps.app.goo.gl/nTtdQ5XpSF6bMmHE8",
   FIRST_YEAR: 2010,
