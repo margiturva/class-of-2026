@@ -1,6 +1,6 @@
 # Pipedrive Class of 2026 — sign-up site
 
-A single-page site (`index.html`) where former Pipedrivers sign up for the alumni party. Each sign-up is written to a Google Sheet in the background, and the page links to a shared Google Drive folder for photos.
+A single-page site (`index.html`) where former Pipedrivers sign up for the alumni party. Each sign-up is written to a Google Sheet in the background, and the page links to a shared Google Photos album for photos.
 
 ## 1. Connect the Google Sheet (about 5 minutes)
 
@@ -17,12 +17,9 @@ The script creates a "Sign-ups" tab with the columns *Signed up at, Name, Email,
 
 If you change the script later, use **Deploy → Manage deployments → Edit → New version** so the URL stays the same.
 
-## 2. Add the photo folder
+## 2. Photo album
 
-1. Create a Google Drive folder and share it as **Anyone with the link → Editor** (so people can upload).
-2. Paste the folder link into `DRIVE_LINK` in the same `CONFIG` block.
-
-Until the link is set, the page shows "Photo folder link coming soon".
+The yearbook button links to a shared Google Photos album (`DRIVE_LINK` in `CONFIG`). Use the album's **Share → Create link** URL (`https://photos.app.goo.gl/...`), not the address bar, and turn on **Collaborate** in the album options so guests can add photos.
 
 ## 3. Party details
 
