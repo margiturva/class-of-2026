@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pipedrive Class of 2026</title>
 <meta name="description" content="Alumni reunion party for everyone who has graduated from Pipedrive. Sign up and share your photos.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://margiturva.github.io/class-of-2026/">
+<meta property="og:title" content="Pipedrive Class of 2026">
+<meta property="og:description" content="Alumni party for former Pipedrivers. Friday, November 13th, 18:00–23:00 at Lift99. Sign up and share your photos.">
+<meta property="og:image" content="https://margiturva.github.io/class-of-2026/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pipedrive Class of 2026 — Friday, November 13th 2026, 18:00–23:00, Lift99">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://margiturva.github.io/class-of-2026/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
@@ -132,6 +142,8 @@ main {
   text-decoration: none;
   animation: rise 1s ease-out 2.7s backwards;
 }
+/* #thumbnail renders the header alone, for the link-preview image */
+.thumbnail .scroll-cue { visibility: hidden; }
 .scroll-cue .arrow { font-size: 1.2rem; animation: bob 2s ease-in-out 3s infinite; }
 @keyframes bob { 50% { transform: translateY(6px); } }
 .eyebrow {
@@ -417,6 +429,7 @@ const CONFIG = {
 /* ============================= */
 
 const $ = (id) => document.getElementById(id);
+if (location.hash === "#thumbnail") document.documentElement.classList.add("thumbnail");
 
 // Parallax: the header content drifts up slowly and fades while the page scrolls over it
 const banner = document.querySelector(".banner");
